@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="Country" type="String">
+      <label>Spotlight market country code</label>
+      <default>FR</default>
+    </entry>
+    <entry name="Locale" type="String">
+      <label>Spotlight market locale</label>
+      <default>fr-FR</default>
+    </entry>
+    <entry name="Refresh" type="String">
+      <label>Changes each time the user asks for a new image</label>
+      <default></default>
+    </entry>
+    <entry name="CacheLimit" type="int">
+      <label>Number of Windows Spotlight images kept in the cache</label>
+      <default>10</default>
+    </entry>
+    <entry name="FillMode" type="int">
+      <label>Sizing, cropping and positioning of the wallpaper image</label>
+      <default>0</default>
+    </entry>
+    <entry name="Color" type="Color">
+      <label>Color of the wallpaper</label>
+      <default>#000000</default>
+    </entry>
+  </group>
+
+</kcfg>

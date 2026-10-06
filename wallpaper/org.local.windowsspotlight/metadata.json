@@ -1,0 +1,11 @@
+{
+    "KPackageStructure": "Plasma/Wallpaper",
+    "KPlugin": {
+        "Description": "Windows Spotlight picture of the day, for a chosen region",
+        "EnabledByDefault": true,
+        "Icon": "office-calendar",
+        "Id": "org.local.windowsspotlight",
+        "License": "GPL-2.0-or-later",
+        "Name": "Windows Spotlight"
+    }
+}

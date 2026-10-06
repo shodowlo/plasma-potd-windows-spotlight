@@ -6,9 +6,12 @@
 
 #include "windowsspotlightprovider.h"
 
+#include <QDir>
+#include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QRegularExpression>
+#include <QStandardPaths>
 
 #include <KIO/StoredTransferJob>
 #include <KPluginFactory>
@@ -16,14 +19,39 @@
 
 WindowsSpotlightProvider::WindowsSpotlightProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args)
     : PotdProvider(parent, data, args)
-    , m_screenWidth(args.size() >= 2 ? args[0].toInt() : 0)
-    , m_screenHeight(args.size() >= 2 ? args[1].toInt() : 0)
+    , m_country(args.size() >= 1 && !args[0].toString().isEmpty() ? args[0].toString() : QStringLiteral("FR"))
+    , m_locale(args.size() >= 2 && !args[1].toString().isEmpty() ? args[1].toString() : QStringLiteral("fr-FR"))
+    , m_cacheLimit(args.size() >= 3 && args[2].toInt() > 0 ? args[2].toInt() : 10)
 {
-    const QUrl url(QStringLiteral("https://fd.api.iris.microsoft.com/v4/api/selection?&placement=88000820&bcnt=1&country=CA&locale=en-CA&fmt=json"));
+    pruneCache();
+
+    const QUrl url(QStringLiteral("https://fd.api.iris.microsoft.com/v4/api/selection?&placement=88000820&bcnt=1&country=%1&locale=%2&fmt=json")
+                       .arg(m_country, m_locale));
 
     KIO::StoredTransferJob* job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
     connect(job, &KIO::StoredTransferJob::finished,
             this, &WindowsSpotlightProvider::pageRequestFinished);
+}
+
+void WindowsSpotlightProvider::pruneCache()
+{
+    const QDir cacheDir(QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)
+                        + QStringLiteral("/plasma_engine_potd"));
+
+    // Images are cached as "windowsspotlight[:args]", each with a ".json" sidecar.
+    // Keep the most recently written m_cacheLimit images and remove the others.
+    const auto entries = cacheDir.entryInfoList({QStringLiteral("windowsspotlight*")}, QDir::Files, QDir::Time);
+    int kept = 0;
+    for (const QFileInfo &info : entries) {
+        if (info.suffix() == QLatin1String("json")) {
+            continue;
+        }
+        if (++kept <= m_cacheLimit) {
+            continue;
+        }
+        QFile::remove(info.absoluteFilePath());
+        QFile::remove(info.absoluteFilePath() + QStringLiteral(".json"));
+    }
 }
 
 void WindowsSpotlightProvider::pageRequestFinished(KJob *_job)

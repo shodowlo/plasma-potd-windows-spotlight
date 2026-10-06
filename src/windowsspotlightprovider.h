@@ -21,9 +21,11 @@ public:
 private:
     void pageRequestFinished(KJob *job);
     void imageRequestFinished(KJob *job);
+    void pruneCache();
 
-    int m_screenWidth;
-    int m_screenHeight;
+    QString m_country;
+    QString m_locale;
+    int m_cacheLimit;
 };
 
 #endif
