@@ -1,9 +1,16 @@
 # Windows Spotlight for Plasma
 
-Two parts show Windows Spotlight images as wallpaper on KDE Plasma 6:
+## About this fork
 
-- **The provider** (`src/`): a C++ library that downloads the image.
-- **The wallpaper type** (`wallpaper/`): a Plasma wallpaper type with its settings.
+This fork is based on [liujed/plasma-potd-windows-spotlight](https://github.com/liujed/plasma-potd-windows-spotlight). It adds:
+
+- a **region** setting (France, Belgium, Canada, United States, United Kingdom, Germany, Spain, Italy, Japan), France by default;
+- a **Windows Spotlight wallpaper type**, with a settings page showing a preview, the title and the author;
+- a **Refresh image** action, in the settings and in the desktop right-click menu;
+- a **cache limit** setting: the oldest cached images are deleted beyond it;
+- an **Open cache folder** button in the settings.
+
+Two parts make up the project: the provider (`src/`) and the wallpaper type (`wallpaper/`).
 
 ## Building
 
@@ -50,3 +57,17 @@ The desktop right-click menu also has **Refresh image**.
 ## Cache
 
 Images are stored in `~/.cache/plasma_engine_potd/`. The oldest ones are deleted once the limit set in the settings is exceeded.
+
+## Credits
+
+This project is a fork of [Windows Spotlight picture-of-the-day provider](https://github.com/liujed/plasma-potd-windows-spotlight) by Jed Liu.
+
+Adapted from the [Bing
+provider](https://invent.kde.org/plasma/kdeplasma-addons/-/blob/a4c3aee27dbebdbe80421eb9257c4c7a99912b01/wallpapers/potd/plugins/providers/bingprovider.cpp)
+by Weng Xuetian in the [KDE Plasma
+Addons](https://invent.kde.org/plasma/kdeplasma-addons) library.
+
+This project benefited from the [Spotlight APIv4
+analysis](https://github.com/ORelio/Spotlight-Downloader/blob/master/SpotlightAPI.md#api-v4)
+by [ORelio](https://github.com/ORelio) of the [Spotlight Downloader
+project](https://github.com/ORelio/Spotlight-Downloader).
